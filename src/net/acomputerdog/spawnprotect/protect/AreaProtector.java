@@ -4,16 +4,10 @@ import net.acomputerdog.spawnprotect.PluginSpawnProtect;
 import org.bukkit.World;
 
 public class AreaProtector extends Protector {
-    private final int x1, y1, z1, x2, y2, z2;
+    private int x1, y1, z1, x2, y2, z2; //defaults to 0
 
-    public AreaProtector(PluginSpawnProtect plugin, World world, boolean allowPVP, boolean allowPVE, boolean allowDamage, boolean forceProtection, int x1, int y1, int z1, int x2, int y2, int z2) {
-        super(plugin, world, allowPVP, allowPVE, allowDamage, forceProtection);
-        this.x1 = x1;
-        this.y1 = y1;
-        this.z1 = z1;
-        this.x2 = x2;
-        this.y2 = y2;
-        this.z2 = z2;
+    public AreaProtector(PluginSpawnProtect plugin, World world) {
+        super(plugin, world);
     }
 
     public int getX1() {
@@ -38,6 +32,49 @@ public class AreaProtector extends Protector {
 
     public int getZ2() {
         return z2;
+    }
+
+    public void setX1(int x1) {
+        this.x1 = x1;
+    }
+
+    public void setY1(int y1) {
+        this.y1 = y1;
+    }
+
+    public void setZ1(int z1) {
+        this.z1 = z1;
+    }
+
+    public void setX2(int x2) {
+        this.x2 = x2;
+    }
+
+    public void setY2(int y2) {
+        this.y2 = y2;
+    }
+
+    public void setZ2(int z2) {
+        this.z2 = z2;
+    }
+
+
+    public void sortXYZ() {
+        if (x2 < x1) {
+            int t = x2;
+            x2 = x1;
+            x1 = t;
+        }
+        if (y2 < y1) {
+            int t = y2;
+            y2 = y1;
+            y1 = t;
+        }
+        if (z2 < z1) {
+            int t = z2;
+            z2 = z1;
+            z1 = t;
+        }
     }
 
     @Override

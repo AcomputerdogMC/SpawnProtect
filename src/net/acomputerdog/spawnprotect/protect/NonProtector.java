@@ -10,7 +10,7 @@ import org.bukkit.event.player.*;
 
 public class NonProtector extends Protector {
     public NonProtector(PluginSpawnProtect plugin, World world) {
-        super(plugin, world, true, true, true, false);
+        super(plugin, world);
     }
     @Override
     public void onBlockBreak(BlockExpEvent e) {}

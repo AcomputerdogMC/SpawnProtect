@@ -18,16 +18,168 @@ import org.bukkit.event.player.*;
 public abstract class Protector {
     protected final PluginSpawnProtect plugin;
 
-    protected final World world;
-    protected final boolean allowPVP, allowPVE, allowDamage, forceProtection;;
+    protected World world;
+    protected boolean forceProtection = false;
 
-    public Protector(PluginSpawnProtect plugin, World world, boolean allowPVP, boolean allowPVE, boolean allowDamage, boolean forceProtection) {
+    protected boolean allowPVP = true;
+    protected boolean allowPVE = true;
+    protected boolean allowDamage = true;
+
+    protected boolean allowPlace = true;
+    protected boolean allowBreak = true;
+    protected boolean allowInteract = true;
+
+    protected boolean allowMobGreifing = true;
+    protected boolean allowSpread = true;
+    protected boolean allowFlow = true;
+    protected boolean allowFire = true;
+
+    protected boolean allowExplosions = true;
+    protected boolean allowPistons = true;
+
+    protected boolean allowArmorStands = true;
+    protected boolean allowEntityInteract = true;
+    protected boolean allowBuckets = true;
+
+    public Protector(PluginSpawnProtect plugin, World world) {
         this.plugin = plugin;
         this.world = world;
+    }
+
+    public boolean isAllowPVP() {
+        return allowPVP;
+    }
+
+    public void setAllowPVP(boolean allowPVP) {
         this.allowPVP = allowPVP;
+    }
+
+    public boolean isAllowPVE() {
+        return allowPVE;
+    }
+
+    public void setAllowPVE(boolean allowPVE) {
         this.allowPVE = allowPVE;
+    }
+
+    public boolean isAllowDamage() {
+        return allowDamage;
+    }
+
+    public void setAllowDamage(boolean allowDamage) {
         this.allowDamage = allowDamage;
+    }
+
+    public boolean isForceProtection() {
+        return forceProtection;
+    }
+
+    public void setForceProtection(boolean forceProtection) {
         this.forceProtection = forceProtection;
+    }
+
+    public boolean isAllowPlace() {
+        return allowPlace;
+    }
+
+    public void setAllowPlace(boolean allowPlace) {
+        this.allowPlace = allowPlace;
+    }
+
+    public boolean isAllowBreak() {
+        return allowBreak;
+    }
+
+    public void setAllowBreak(boolean allowBreak) {
+        this.allowBreak = allowBreak;
+    }
+
+    public boolean isAllowInteract() {
+        return allowInteract;
+    }
+
+    public void setAllowInteract(boolean allowInteract) {
+        this.allowInteract = allowInteract;
+    }
+
+    public boolean isAllowMobGreifing() {
+        return allowMobGreifing;
+    }
+
+    public void setAllowMobGreifing(boolean allowMobGreifing) {
+        this.allowMobGreifing = allowMobGreifing;
+    }
+
+    public boolean isAllowSpread() {
+        return allowSpread;
+    }
+
+    public void setAllowSpread(boolean allowSpread) {
+        this.allowSpread = allowSpread;
+    }
+
+    public boolean isAllowFlow() {
+        return allowFlow;
+    }
+
+    public void setAllowFlow(boolean allowFlow) {
+        this.allowFlow = allowFlow;
+    }
+
+    public boolean isAllowFire() {
+        return allowFire;
+    }
+
+    public void setAllowFire(boolean allowFire) {
+        this.allowFire = allowFire;
+    }
+
+    public boolean isAllowExplosions() {
+        return allowExplosions;
+    }
+
+    public void setAllowExplosions(boolean allowExplosions) {
+        this.allowExplosions = allowExplosions;
+    }
+
+    public boolean isAllowPistons() {
+        return allowPistons;
+    }
+
+    public void setAllowPistons(boolean allowPistons) {
+        this.allowPistons = allowPistons;
+    }
+
+    public boolean isAllowArmorStands() {
+        return allowArmorStands;
+    }
+
+    public void setAllowArmorStands(boolean allowArmorStands) {
+        this.allowArmorStands = allowArmorStands;
+    }
+
+    public boolean isAllowEntityInteract() {
+        return allowEntityInteract;
+    }
+
+    public void setAllowEntityInteract(boolean allowEntityInteract) {
+        this.allowEntityInteract = allowEntityInteract;
+    }
+
+    public boolean isAllowBuckets() {
+        return allowBuckets;
+    }
+
+    public void setAllowBuckets(boolean allowBuckets) {
+        this.allowBuckets = allowBuckets;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public void setWorld(World world) {
+        this.world = world;
     }
 
     public PluginSpawnProtect getPlugin() {
@@ -35,33 +187,43 @@ public abstract class Protector {
     }
 
     public void onBlockBreak(BlockExpEvent e) {
-        if (e instanceof BlockBreakEvent) {
+        if (e instanceof BlockBreakEvent && !allowBreak) {
             filterAction(((BlockBreakEvent) e), ((BlockBreakEvent) e).getPlayer());
         }
     }
 
     public void onBlockPlace(BlockPlaceEvent e) {
-        filterAction(e, e.getPlayer());
+        if (!allowPlace) {
+            filterAction(e, e.getPlayer());
+        }
     }
 
     public void onPiston(BlockPistonEvent e) {
-        filterAction(e, e.getBlock());
+        if (!allowPistons) {
+            filterAction(e, e.getBlock());
+        }
     }
 
     public void onSpread(BlockSpreadEvent e) {
-        filterAction(e, e.getBlock());
+        if (!allowSpread) {
+            filterAction(e, e.getBlock());
+        }
     }
 
     public void onFlow(BlockFromToEvent e) {
-        filterAction(e, e.getToBlock());
+        if (!allowFlow) {
+            filterAction(e, e.getToBlock());
+        }
     }
 
     public void onInteract(PlayerInteractEvent e) {
-        filterAction(e, e.getPlayer());
+        if (!allowInteract) {
+            filterAction(e, e.getPlayer());
+        }
     }
 
     public void onDamage(EntityDamageEvent e) {
-        if (checkWorld(e.getEntity().getWorld())) { //don't bother with complicated logic if it isn't even the same world
+        if (!allowDamage && checkWorld(e.getEntity().getWorld())) { //don't bother with complicated logic if it isn't even the same world
             if (e.getEntityType() == EntityType.DROPPED_ITEM) {
                 //make sure items can be destroyed
                 return;
@@ -90,40 +252,54 @@ public abstract class Protector {
     }
 
     public void onGrief(EntityChangeBlockEvent e) {
-        filterAction(e, e.getBlock());
-    }
-
-    public void onExplode(ExplosionPrimeEvent e) {
-        filterAction(e, e.getEntity());
-        if (e.isCancelled() && e.getEntityType() == EntityType.CREEPER) {
-            //kill creepers when they don't explode
-            e.getEntity().remove();
-        }
-    }
-
-    public void onFire(BlockIgniteEvent e) {
-        Player p = e.getPlayer();
-        if (p != null) {
-            filterAction(e, p);
-        } else {
+        if (!allowMobGreifing) {
             filterAction(e, e.getBlock());
         }
     }
 
+    public void onExplode(ExplosionPrimeEvent e) {
+        if (!allowExplosions) {
+            filterAction(e, e.getEntity());
+            if (e.isCancelled() && e.getEntityType() == EntityType.CREEPER) {
+                //kill creepers when they don't explode
+                e.getEntity().remove();
+            }
+        }
+    }
+
+    public void onFire(BlockIgniteEvent e) {
+        if (!allowFire) {
+            Player p = e.getPlayer();
+            if (p != null) {
+                filterAction(e, p);
+            } else {
+                filterAction(e, e.getBlock());
+            }
+        }
+    }
+
     public void onArmorStand(PlayerArmorStandManipulateEvent e) {
-        filterAction(e, e.getPlayer());
+        if (!allowArmorStands) {
+            filterAction(e, e.getPlayer());
+        }
     }
 
     public void onEntityInteract(PlayerInteractEntityEvent e) {
-        filterAction(e, e.getPlayer());
+        if (!allowEntityInteract) {
+            filterAction(e, e.getPlayer());
+        }
     }
 
     public void onBucketEmpty(PlayerBucketEmptyEvent e) {
-        filterAction(e, e.getPlayer());
+        if (!allowBuckets) {
+            filterAction(e, e.getPlayer());
+        }
     }
 
     public void onBucketFill(PlayerBucketFillEvent e) {
-        filterAction(e, e.getPlayer());
+        if (!allowBuckets) {
+            filterAction(e, e.getPlayer());
+        }
     }
 
     /*

@@ -1,77 +1,83 @@
-# SpawnProtect configuration file version 5
+# SpawnProtect configuration file version 6
 # By default protection settings are modest, spawn area is not set, and protection is disabled.
 
 # Configuration file version.  Do not edit unless you KNOW what you are doing!
-config_version: 5
-
-# The name of the world to protect.  Set to "" for the default world.
-world_name: ""
+config_version: 6
 
 # If protection is enabled
 protection_enabled: false
 
-# top-left x-coord of the spawn area
-spawn_x1: 0
-
-# top-left z-coord of the spawn area
-spawn_z1: 0
-
-# bottom-right x-coord of the spawn area
-spawn_x2: 0
-
-# bottom-right z-coord of the spawn area
-spawn_z2: 0
-
-# bottom y-coord of the spawn area
-spawn_y1: 0
-
-# top y-coord of the spawn area
-spawn_y2: 0
-
-# If players can place blocks
-allow_place: false
-
-# If players can break blocks
-allow_break: false
-
-# If players can right-click
-allow_interact: true
-
-# If players can PvE
-allow_pve: true
-
-# If players can PvP (if server settings allow)
-allow pvp: true
-
-# If players can take damage
-allow_damage: true
-
-# Allow mobs to damage spawn
-allow_mob_greifing: false
-
-# Allow fire, plants, etc to spread within spawn area
-allow_spread: false
-
-# Allow water or lava to flow in spawn area (also affects dragon eggs)
-allow_flow: false
-
-# Allow pistons to affect spawn area
-allow_pistons: false
-
-# Allow explosions in the spawn area
-allow_explosions: false
-
-# Allow flint and steal, fireball, etc. usage in spawn area
-allow_fire: false
-
-# Allow interacting with armor stands
-allow_armor_stands: false
-
-# Allow interacting with villagers, item frames, etc.
-allow_entity_interact: false
-
-# Allow use of buckets in spawn area
-allow_buckets: false
-
 # Attempt to block any and all changes to blocks within spawn area
 force_protect: false
+
+# The name of the world.  A "*" indicates the default for worlds that are not configured.
+world.*:
+
+  # The style of protection.  Can be area, global, or none.
+  #   Area affects a specified area of a world
+  #   Global affects an entire world and does not include XYZ coordinates
+  #   None disables all protection in a world
+  protection_mode: area
+
+  # top-left x-coord of the spawn area
+  spawn_x1: 0
+
+  # bottom y-coord of the spawn area
+  spawn_y1: 0
+
+  # top-left z-coord of the spawn area
+  spawn_z1: 0
+
+  # bottom-right x-coord of the spawn area
+  spawn_x2: 0
+
+  # top y-coord of the spawn area
+  spawn_y2: 0
+
+  # bottom-right z-coord of the spawn area
+  spawn_z2: 0
+
+  # If players can place blocks
+  allow_place: false
+
+  # If players can break blocks
+  allow_break: false
+
+  # If players can right-click
+  allow_interact: true
+
+  # If players can PvE
+  allow_pve: true
+
+  # If players can PvP (if server settings allow)
+  allow pvp: true
+
+  # If players can take damage
+  allow_damage: true
+
+  # Allow mobs to damage spawn
+  allow_mob_greifing: false
+
+  # Allow fire, plants, etc to spread within spawn area
+  allow_spread: false
+
+  # Allow water or lava to flow in spawn area (also affects dragon eggs)
+  allow_flow: false
+
+  # Allow pistons to affect spawn area
+  allow_pistons: false
+
+  # Allow explosions in the spawn area
+  allow_explosions: false
+
+  # Allow flint and steal, fireball, etc. usage in spawn area
+  allow_fire: false
+
+  # Allow interacting with armor stands
+  allow_armor_stands: false
+
+  # Allow interacting with villagers, item frames, etc.
+  allow_entity_interact: false
+
+  # Allow use of buckets in spawn area
+  allow_buckets: false
