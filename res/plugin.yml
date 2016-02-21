@@ -1,0 +1,11 @@
+name: SpawnProtect
+version: 0.9.1
+description: Protects the spawn area
+author: acomputerdog
+main: net.acomputerdog.spawnprotect.PluginSpawnProtect
+softdepend: [Multiverse-Core]
+
+permissions:
+  spawnprotect.bypass:
+    description: Bypass spawn protection
+    default: op
