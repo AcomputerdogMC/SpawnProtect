@@ -228,6 +228,12 @@ public abstract class Protector {
                 //make sure items can be destroyed
                 return;
             }
+            if (e.getEntityType() == EntityType.ITEM_FRAME || e.getEntityType() == EntityType.ARMOR_STAND) {
+                if (!allowArmorStands) {
+                    filterAction(e, e.getEntity());
+                }
+                return;
+            }
             if (e instanceof EntityDamageByEntityEvent) {
                 EntityDamageByEntityEvent e2 = (EntityDamageByEntityEvent) e;
                 if (e2.getDamager().getType() == EntityType.PLAYER) {
