@@ -254,6 +254,7 @@ public class PluginSpawnProtect extends JavaPlugin implements Listener {
     private Protector readProtector(ConfigurationSection s, World world) {
         try {
             String mode = s.getString("protection_mode");
+            getLogger().info("Enabling " + mode + " protection for " + world.getName());
             switch (mode.toLowerCase()) {
                 case "none":
                     //getLogger().info("Using protection mode none for: " + world.getName());
