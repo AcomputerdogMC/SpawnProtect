@@ -6,6 +6,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.block.*;
@@ -228,12 +229,14 @@ public abstract class Protector {
                 //make sure items can be destroyed
                 return;
             }
+            /*
             if (e.getEntityType() == EntityType.ITEM_FRAME || e.getEntityType() == EntityType.ARMOR_STAND) {
                 if (!allowArmorStands) {
                     filterAction(e, e.getEntity());
                 }
                 return;
             }
+            */
             if (e instanceof EntityDamageByEntityEvent) {
                 EntityDamageByEntityEvent e2 = (EntityDamageByEntityEvent) e;
                 if (e2.getDamager().getType() == EntityType.PLAYER) {
@@ -243,8 +246,15 @@ public abstract class Protector {
                             filterAction(e2, (Player) e2.getDamager());
                         }
                     } else if (!allowPVE) {
-                        //PvE
-                        filterAction(e2, (Player) e2.getDamager());
+                        if (e.getEntity() instanceof LivingEntity) {
+                            //PvE
+                            filterAction(e2, (Player) e2.getDamager());
+                        } else {
+                            if (!allowArmorStands) {
+                                //nonliving, AKA armor stands
+                                filterAction(e, e.getEntity());
+                            }
+                        }
                     }
                 } else if (!allowDamage) {
                     //player taking damage from entity
