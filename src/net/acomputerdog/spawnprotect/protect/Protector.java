@@ -189,13 +189,13 @@ public abstract class Protector {
 
     public void onBlockBreak(BlockExpEvent e) {
         if (e instanceof BlockBreakEvent && !allowBreak) {
-            filterAction(((BlockBreakEvent) e), ((BlockBreakEvent) e).getPlayer());
+            filterAction(((BlockBreakEvent) e), ((BlockBreakEvent) e).getPlayer(), e.getBlock());
         }
     }
 
     public void onBlockPlace(BlockPlaceEvent e) {
         if (!allowPlace) {
-            filterAction(e, e.getPlayer());
+            filterAction(e, e.getPlayer(), e.getBlock());
         }
     }
 
@@ -219,7 +219,7 @@ public abstract class Protector {
 
     public void onInteract(PlayerInteractEvent e) {
         if (!allowInteract) {
-            filterAction(e, e.getPlayer());
+            filterAction(e, e.getPlayer(), e.getClickedBlock());
         }
     }
 
@@ -279,7 +279,7 @@ public abstract class Protector {
         if (!allowFire) {
             Player p = e.getPlayer();
             if (p != null) {
-                filterAction(e, p);
+                filterAction(e, p, e.getBlock());
             } else {
                 filterAction(e, e.getBlock());
             }
@@ -300,13 +300,13 @@ public abstract class Protector {
 
     public void onBucketEmpty(PlayerBucketEmptyEvent e) {
         if (!allowBuckets) {
-            filterAction(e, e.getPlayer());
+            filterAction(e, e.getPlayer(), e.getBlockClicked());
         }
     }
 
     public void onBucketFill(PlayerBucketFillEvent e) {
         if (!allowBuckets) {
-            filterAction(e, e.getPlayer());
+            filterAction(e, e.getPlayer(), e.getBlockClicked());
         }
     }
 
@@ -328,6 +328,14 @@ public abstract class Protector {
     protected boolean checkBoundsAndPerms(Player p) {
         Location l = p.getLocation();
         return !(checkBounds(l.getWorld(), l.getBlockX(), l.getBlockY(), l.getBlockZ()) && !checkPerms(p));
+    }
+
+    protected void filterAction(Cancellable c, Player p, Block b) {
+        if (checkBounds(b.getWorld(), b.getX(), b.getY(), b.getZ())) {
+            if (!checkPerms(p)) {
+                c.setCancelled(true);
+            }
+        }
     }
 
     protected void filterAction(Cancellable c, Player p) {
