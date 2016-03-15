@@ -4,10 +4,7 @@ import net.acomputerdog.spawnprotect.PluginSpawnProtect;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
@@ -238,12 +235,12 @@ public abstract class Protector {
                             filterAction(e2, (Player) e2.getDamager());
                         }
                     } else if (!allowPVE) {
-                        if (e.getEntity() instanceof LivingEntity) {
+                        if (e.getEntity() instanceof LivingEntity && !(e.getEntity() instanceof ArmorStand)) {
                             //PvE
                             filterAction(e2, (Player) e2.getDamager());
                         } else {
                             if (!allowArmorStands) {
-                                //nonliving, AKA armor stands
+                                //nonliving or armor stands
                                 filterAction(e, e.getEntity());
                             }
                         }
