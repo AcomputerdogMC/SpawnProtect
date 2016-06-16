@@ -199,6 +199,8 @@ public class PluginSpawnProtect extends JavaPlugin implements Listener {
     }
 
     private Protector populateSettings(ConfigurationSection s, Protector p) {
+        getLogger().info(s.getCurrentPath() + ": allow_armor_stands=" + s.getBoolean("allow_armor_stands"));
+
         p.setForceProtection(forceProtection);
 
         p.setAllowBreak(s.getBoolean("allow_break", p.isAllowBreak()));

@@ -234,15 +234,15 @@ public abstract class Protector {
                             //PVP
                             filterAction(e2, (Player) e2.getDamager());
                         }
-                    } else if (!allowPVE) {
+                    } else {
                         if (e.getEntity() instanceof LivingEntity && !(e.getEntity() instanceof ArmorStand)) {
-                            //PvE
-                            filterAction(e2, (Player) e2.getDamager());
-                        } else {
-                            if (!allowArmorStands) {
-                                //nonliving or armor stands
-                                filterAction(e, e.getEntity());
+                            if (!allowPVE) {
+                                //PvE
+                                filterAction(e2, (Player) e2.getDamager());
                             }
+                        } else if (!allowArmorStands) {
+                            //nonliving or armor stands
+                            filterAction(e, e.getEntity());
                         }
                     }
                 } else if (!allowDamage) {
