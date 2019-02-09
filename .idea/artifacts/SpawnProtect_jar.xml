@@ -1,9 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="SpawnProtect:jar">
-    <output-path>$PROJECT_DIR$/out</output-path>
-    <root id="archive" name="SpawnProtect.jar">
-      <element id="module-output" name="SpawnProtect" />
-      <element id="file-copy" path="$PROJECT_DIR$/LICENSE" />
-    </root>
-  </artifact>
-</component>
