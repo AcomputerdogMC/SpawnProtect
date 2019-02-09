@@ -7,6 +7,9 @@ import org.bukkit.World;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Maps locations to protectors
+ */
 public class ProtectorMap {
     private final PluginSpawnProtect plugin;
     private final Map<World, Protector> worldMap;

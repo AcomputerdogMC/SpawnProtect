@@ -7,7 +7,6 @@ import net.acomputerdog.spawnprotect.protect.NonProtector;
 import net.acomputerdog.spawnprotect.protect.Protector;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -22,7 +21,11 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
+import java.util.logging.Level;
 
+/**
+ * Plugin main class
+ */
 public class PluginSpawnProtect extends JavaPlugin implements Listener {
 
     private static final int CONFIG_VERSION = 6;
@@ -51,9 +54,8 @@ public class PluginSpawnProtect extends JavaPlugin implements Listener {
             }
             loaded = true;
         } catch (Exception e) {
-            getLogger().severe("Exception during startup!  SpawnProtect will not start!");
+            getLogger().log(Level.SEVERE, "Exception during startup.  SpawnProtect will not start!", e);
             super.setEnabled(false);
-            throw new RuntimeException("Exception during startup!", e);
         }
     }
 
@@ -63,50 +65,41 @@ public class PluginSpawnProtect extends JavaPlugin implements Listener {
         protectorMap = null;
     }
 
-    private void loadConfig() {
+    private void loadConfig() throws IOException {
         if (!getDataFolder().isDirectory() && !getDataFolder().mkdir()) {
             getLogger().warning("Unable to create data directory!");
         }
         configFile = new File(getDataFolder(), "SpawnProtect.cfg");
+
+        // copy the config file if missing
         if (!configFile.isFile()) {
             getLogger().warning("Configuration file not found, a new one will be created.");
-            InputStream in = null;
-            OutputStream out = null;
-            try {
-                in = getClass().getResourceAsStream("/default.yml");
-                out = new FileOutputStream(configFile);
-                while (in.available() > 0) {
-                    out.write(in.read());
+            try (InputStream in = getClass().getResourceAsStream("/default.yml")) {
+                try (OutputStream out = new FileOutputStream(configFile)) {
+                    byte[] buff = new byte[1024];
+                    int count;
+                    while ((count = in.read(buff)) > 0) {
+                        out.write(buff, 0, count);
+                    }
                 }
             } catch (Exception e) {
-                throw new RuntimeException("Exception creating new configuration file!", e);
-            } finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException ignored) {}
-                }
-                if (out != null) {
-                    try {
-                        out.close();
-                    } catch (IOException ignored) {}
-                }
+                throw new IOException("Exception creating new configuration file!", e);
             }
         }
+
+        // read config file
         try {
             getConfig().load(configFile);
             readConfig();
-        } catch (IOException e) {
-            throw new RuntimeException("Exception loading configuration file!", e);
         } catch (Exception e) {
             getLogger().severe("*****************************************************************");
             getLogger().severe("*Errors found in your configuration, SpawnProtect will NOT load!*");
             getLogger().severe("*****************************************************************");
-            throw new RuntimeException("Errors found in configuration file", e);
+            throw new IOException("Errors found in configuration file", e);
         }
     }
 
-    private void readConfig() throws InvalidConfigurationException {
+    private void readConfig() {
         FileConfiguration c = getConfig();
         if (c.getInt("config_version", -1) != CONFIG_VERSION) {
             getLogger().warning("Configuration file is out of date, you should regenerate it.");
@@ -171,7 +164,7 @@ public class PluginSpawnProtect extends JavaPlugin implements Listener {
     private Protector readProtector(ConfigurationSection s, World world) {
         try {
             String mode = s.getString("protection_mode");
-            getLogger().info("Enabling " + mode + " protection for " + world.getName());
+            getLogger().info(() -> "Enabling " + mode + " protection for " + world.getName());
             switch (mode.toLowerCase()) {
                 case "none":
                     return new NonProtector(this, world);
@@ -227,10 +220,7 @@ public class PluginSpawnProtect extends JavaPlugin implements Listener {
 
     private void logConfigError(String message, Throwable t) {
         getLogger().warning("---|Configuration Error|---------------");
-        getLogger().warning(message);
-        if (t != null) {
-            t.printStackTrace();
-        }
+        getLogger().log(Level.WARNING, message, t);
         getLogger().warning("---------------------------------------");
     }
 

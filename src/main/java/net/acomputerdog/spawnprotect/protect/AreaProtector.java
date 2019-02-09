@@ -3,6 +3,9 @@ package net.acomputerdog.spawnprotect.protect;
 import net.acomputerdog.spawnprotect.PluginSpawnProtect;
 import org.bukkit.World;
 
+/**
+ * A protector type that protects a region
+ */
 public class AreaProtector extends Protector {
     private int x1, y1, z1, x2, y2, z2; //defaults to 0
 

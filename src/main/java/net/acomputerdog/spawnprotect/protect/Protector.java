@@ -13,6 +13,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.player.*;
 
+/**
+ * Abstract parent class for specific types of protectors
+ */
 public abstract class Protector {
     protected final PluginSpawnProtect plugin;
 

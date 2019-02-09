@@ -8,10 +8,14 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.player.*;
 
+/**
+ * Protector type that does not protect an area
+ */
 public class NonProtector extends Protector {
     public NonProtector(PluginSpawnProtect plugin, World world) {
         super(plugin, world);
     }
+
     @Override
     public void onBlockBreak(BlockExpEvent e) {}
 
