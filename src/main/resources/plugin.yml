@@ -1,5 +1,5 @@
-name: SpawnProtect
-version: 0.10.6
+name: ${name}
+version: ${version}
 description: Protects the spawn area
 author: acomputerdog
 main: net.acomputerdog.spawnprotect.PluginSpawnProtect
