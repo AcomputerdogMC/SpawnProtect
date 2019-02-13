@@ -4,6 +4,7 @@ description: Protects the spawn area
 author: acomputerdog
 main: net.acomputerdog.spawnprotect.PluginSpawnProtect
 load: STARTUP
+api-version: 1.13
 
 permissions:
   spawnprotect.bypass:
